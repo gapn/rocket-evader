@@ -25,5 +25,6 @@ A retro-style arcade shooter/evader game built for the FCC "Legacy Code" Game Ja
 
 -   ✅ **Initial Setup:** Project structure, `index.html`, `style.css`, `script.js`, and `.gitignore` created.
 -   ✅ **Player Implementation:** A controllable player character is on screen.
--   ✅ **Core Movement and Boundary Detection:** The player can move left and right using arrow keys, movement confined within screen limits.
--   ⏳ **Next:** Implement spawning and falling obstacles.
+-   ✅ **Core Movement and Boundary Detection:** The player can move left and right using arrow keys, movement confined within play area limits.
+-   ✅ **Obstacle System:** Obstacles spawn at random, fall down the screen, and are removed when they exit the play area.
+-   ⏳ **Next:** Implement collision detection and scoring.
