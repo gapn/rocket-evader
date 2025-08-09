@@ -1,6 +1,8 @@
 # 🚀 Rocket Evader 🚀
 
-A retro-style arcade shooter/evader game built for the "Legacy Code" Game Jam.
+A retro-style arcade shooter/evader game built for the FCC "Legacy Code" Game Jam.
+
+---
 
 ## Concept
 
@@ -8,3 +10,20 @@ A retro-style arcade shooter/evader game built for the "Legacy Code" Game Jam.
 - Evade falling obstacles that spawn continuously from the top.
 - Survive as long as possible to increase your score.
 - Shoot the obstacles to destroy them for extra points, game speeds up over time!
+
+---
+
+## Tech Stack 🛠️
+
+-   **HTML Canvas:** Renders all game elements.
+-   **CSS:** Provides the retro styling for the canvas and page.
+-   **Vanilla JavaScript:** Powers all core game logic, adhering to the jam's constraints.
+
+---
+
+## Progress Tracker 📈
+
+-   ✅ **Initial Setup:** Project structure, `index.html`, `style.css`, `script.js`, and `.gitignore` created.
+-   ✅ **Player Implementation:** A controllable player character is on screen.
+-   ✅ **Core Movement and Boundary Detection:** The player can move left and right using arrow keys, movement confined within screen limits.
+-   ⏳ **Next:** Implement spawning and falling obstacles.
