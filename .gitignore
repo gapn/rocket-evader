@@ -1,0 +1,10 @@
+# Ignore common OS-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore dependency folders (good practice even if not using them yet)
+/node_modules
+
+# Ignore build output folders
+/dist
+/build
