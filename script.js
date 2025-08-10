@@ -1,14 +1,53 @@
-console.log("Game project initialized.");
+const rocketImage = new Image;
+rocketImage.src = "assets/images/rocket.png";
+
+const obstaclesProperties = [
+    { sourceUrl: "assets/images/planet-blue.png" },
+    { sourceUrl: "assets/images/planet-green.png" },
+    { sourceUrl: "assets/images/planet-orange.png" },
+    { sourceUrl: "assets/images/planet-ring-blue.png" },
+    { sourceUrl: "assets/images/planet-ring-yellow.png" },
+    { sourceUrl: "assets/images/comet-black.png" },
+    { sourceUrl: "assets/images/comet-orange.png" },
+    { sourceUrl: "assets/images/black-hole.png" }
+]
+
+const obstacleImages = obstaclesProperties.map((type) => {
+    const image = new Image();
+    image.src = type.sourceUrl;
+    return image;
+})
 
 const canvas = document.getElementById("gameCanvas");
-const context = canvas.getContext('2d');
-const playerDimension = 20;
-const obstacleDimension = 10;
+const context = canvas.getContext("2d");
+const dodgeSound = document.getElementById("dodgeSound");
+const speedUpSound = document.getElementById("speedUpSound");
+const gameOverSound = document.getElementById("gameOverSound");
+const playerDimension = 30;
+const obstacleDimension = 30;
 const obstacleHalfDimension = obstacleDimension / 2;
-const currentObstacleSpeed = 1;
+let speedUpCoefficient = 1;
+let currentObstacleSpeed = 1;
 let isGameOver = false;
 let score = 0;
 let scoreIncrement = 10;
+let nextSpeedIncreasePoints = 100;
+let activeObstacleType;
+let spawnerInterval;
+
+function playSoundDuration(soundElement, durationInSeconds) {
+    soundElement.currentTime = 0;
+    soundElement.play();
+    setTimeout(() => {
+        soundElement.pause();
+    }, durationInSeconds * 1000);
+}
+
+function selectObstacleForTheGame() {
+    const randomObstacleIndex = Math.floor(Math.random() * obstaclesProperties.length);
+    activeObstacleType = obstaclesProperties[randomObstacleIndex];
+    activeObstacleType.image = obstacleImages[randomObstacleIndex];
+}
 
 const player = {
     xPositionPlayer: canvas.width / 2 - playerDimension / 2,
@@ -55,7 +94,8 @@ function spawnObject() {
         yPositionObstacle: 0,
         obstacleWidth: obstacleDimension,
         obstacleHeight: obstacleDimension,
-        obstacleSpeed: currentObstacleSpeed
+        obstacleSpeed: currentObstacleSpeed,
+        obstacleImage: activeObstacleType.image
     }
     obstaclesArray.push(obstacle);
 }
@@ -69,7 +109,7 @@ function updateObjects() {
 function drawObjects() {
     obstaclesArray.forEach(element => {
         context.fillStyle = "green";
-        context.fillRect(element.xPositionObstacle, element.yPositionObstacle, obstacleDimension, obstacleDimension);
+        context.drawImage(element.obstacleImage, element.xPositionObstacle, element.yPositionObstacle, obstacleDimension, obstacleDimension);
     })
 }
 
@@ -78,6 +118,17 @@ function deleteObject() {
         if (obstaclesArray[i].yPositionObstacle > canvas.height) {
             obstaclesArray.splice(i, 1);
             score += scoreIncrement;
+            playSoundDuration(dodgeSound, 0.2);
+            if (score >= nextSpeedIncreasePoints) {
+                currentObstacleSpeed += 0.5;
+                nextSpeedIncreasePoints +=100;
+                playSoundDuration(speedUpSound, 0.7);
+                if (speedUpCoefficient > 0.2) {
+                    speedUpCoefficient -= 0.1;
+                };
+                clearInterval(spawnerInterval);
+                spawnerInterval = setInterval(spawnObject, speedUpCoefficient * 1000);
+            }
         }
     }
 }
@@ -91,6 +142,8 @@ function collisionDetection() {
             element.yPositionObstacle + obstacleDimension > player.yPositionPlayer            
         ) {
             isGameOver = true;
+            gameOverSound.play();
+            clearInterval(spawnerInterval);
         }
     })
 }
@@ -108,6 +161,12 @@ function resetGame() {
     score = 0;
     isGameOver = false;
     scoreIncrement = 10;
+    currentObstacleSpeed = 1;
+    nextSpeedIncreasePoints = 100;
+    speedUpCoefficient = 1;
+    selectObstacleForTheGame();
+
+    spawnerInterval = setInterval(spawnObject, speedUpCoefficient * 1000);
 
     gameLoop();
 }
@@ -123,7 +182,7 @@ function gameLoop() {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "red";
-    context.fillRect(player.xPositionPlayer, player.yPositionPlayer, player.playerWidth, player.playerHeight);
+    context.drawImage(rocketImage, player.xPositionPlayer, player.yPositionPlayer, player.playerWidth, player.playerHeight);
     drawObjects();
     context.font = "24px Bitcount Prop Double";
     context.textAlign = "left";
@@ -141,6 +200,4 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-setInterval(spawnObject, 1500)
-
-gameLoop();
+resetGame();
