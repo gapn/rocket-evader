@@ -28,4 +28,5 @@ A retro-style arcade shooter/evader game built for the FCC "Legacy Code" Game Ja
 -   ✅ **Core Movement and Boundary Detection:** The player can move left and right using arrow keys, movement confined within play area limits.
 -   ✅ **Obstacle System:** Obstacles spawn at random, fall down the screen, and are removed when they exit the play area.
 -   ✅ **Collision & Scoring:** The game detects collisions with obstacles, triggers a 'game over' state, and keeps score.
--   ⏳ **Next:** Add a 'Game Over' message and a restart mechanic.
+-   ✅ **Game Over & Restart:** 'Game Over' message when detected collision, full restart mechanic.
+-   ⏳ **Next:** Change player and obstacle squares to images, add sfx, add increasing difficulty (faster obstacles).

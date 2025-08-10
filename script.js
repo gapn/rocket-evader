@@ -91,9 +91,25 @@ function collisionDetection() {
             element.yPositionObstacle + obstacleDimension > player.yPositionPlayer            
         ) {
             isGameOver = true;
-            alert("GAME OVER");
         }
     })
+}
+
+document.addEventListener("keydown", (pressed) => {
+    if (isGameOver && pressed.key === "Enter") {
+        resetGame();
+    }
+});
+
+function resetGame() {
+    player.xPositionPlayer = canvas.width / 2 - playerDimension / 2;
+    player.yPositionPlayer = canvas.height - playerDimension;
+    obstaclesArray.length = 0;
+    score = 0;
+    isGameOver = false;
+    scoreIncrement = 10;
+
+    gameLoop();
 }
 
 function gameLoop() {
@@ -110,9 +126,18 @@ function gameLoop() {
     context.fillRect(player.xPositionPlayer, player.yPositionPlayer, player.playerWidth, player.playerHeight);
     drawObjects();
     context.font = "24px Bitcount Prop Double";
+    context.textAlign = "left";
     context.fillStyle = "white";
     context.fillText("Score: " + score, 10, 30);
     
+    if (isGameOver) {
+        context.font = "60px Bungee";
+        context.textAlign = "center"; // Use the correct property name here
+        context.fillStyle = "greenyellow";
+        context.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+        return
+    }
+
     requestAnimationFrame(gameLoop);
 }
 
